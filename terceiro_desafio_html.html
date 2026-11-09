@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enciclopédia Livre — HTML5 e Acessibilidade Web</title>
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --text-color: #202124;
+            --header-bg: #1a252f;
+            --header-text: #ffffff;
+            --accent-color: #0066cc;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Acessibilidade: Atalho para saltar navegação */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 10px;
+            background: var(--accent-color);
+            color: white;
+            padding: 8px 16px;
+            z-index: 100;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .skip-link:focus {
+            top: 10px;
+        }
+
+        header {
+            background-color: var(--header-bg);
+            color: var(--header-text);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .search-box input {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 260px 1fr 300px;
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .layout-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Sidebar / Índice */
+        aside.toc {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            height: fit-content;
+        }
+
+        aside.toc h2 {
+            font-size: 1.1rem;
+            margin-top: 0;
+        }
+
+        aside.toc ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        aside.toc li {
+            margin-bottom: 0.5rem;
+        }
+
+        aside.toc a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        aside.toc a:hover, aside.toc a:focus {
+            text-decoration: underline;
+        }
+
+        /* Cartão de Fatos / Infobox */
+        aside.infobox {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            height: fit-content;
+        }
+
+        aside.infobox table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        aside.infobox th, aside.infobox td {
+            padding: 6px 8px;
+            text-align: left;
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* Conteúdo Principal */
+        main {
+            background: var(--card-bg);
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+
+        article header {
+            background: transparent;
+            color: inherit;
+            padding: 0 0 1rem 0;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        article h1 {
+            font-size: 2.2rem;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .meta-info {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        figure {
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        figure img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+
+        figcaption {
+            font-size: 0.85rem;
+            color: #555;
+            margin-top: 0.5rem;
+        }
+
+        kbd {
+            background-color: #eee;
+            border: 1px solid #b4b4b4;
+            border-radius: 3px;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+            color: #333;
+            display: inline-block;
+            font-size: 0.85em;
+            font-weight: 700;
+            line-height: 1;
+            padding: 2px 5px;
+            white-space: nowrap;
+        }
+
+        blockquote {
+            border-left: 4px solid var(--accent-color);
+            margin: 1.5rem 0;
+            padding-left: 1rem;
+            font-style: italic;
+            color: #444;
+        }
+
+        details {
+            background: #f1f3f4;
+            padding: 0.75rem 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+
+        summary {
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        footer {
+            background-color: var(--header-bg);
+            color: var(--header-text);
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 3rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Acessibilidade: Link de salto para leitores de tela -->
+    <a href="#conteudo-principal" class="skip-link">Ir para o conteúdo principal</a>
+
+    <!-- Topo / Cabeçalho Global -->
+    <header role="banner">
+        <div>
+            <h1>WikiWeb</h1>
+            <small>A Enciclopédia Livre e Acessível</small>
+        </div>
+        <div class="search-box">
+            <label for="site-search" class="sr-only">Pesquisar artigo:</label>
+            <input type="search" id="site-search" placeholder="Buscar no artigo..." aria-label="Buscar conteúdo na página">
+        </div>
+    </header>
+
+    <div class="layout-grid">
+
+        <!-- Navegação Lateral / Índice do Artigo -->
+        <aside class="toc" role="complementary" aria-label="Índice do Artigo">
+            <h2>Índice</h2>
+            <nav role="navigation" aria-label="Seções do artigo">
+                <ul>
+                    <li><a href="#introducao">1. Introdução</a></li>
+                    <li><a href="#historia">2. História e Evolução</a></li>
+                    <li><a href="#acessibilidade">3. Acessibilidade e Padrões WAI</a></li>
+                    <li><a href="#recursos">4. Recursos Multimídia</a></li>
+                    <li><a href="#referencias">5. Referências</a></li>
+                </ul>
+            </nav>
+
+            <hr>
+
+            <p><small>Progresso de Leitura:</small></p>
+            <progress value="40" max="100" aria-label="Progresso de Leitura da Página">40%</progress>
+        </aside>
+
+        <!-- Conteúdo Principal Único -->
+        <main id="conteudo-principal" tabindex="-1">
+            <article>
+                <header>
+                    <h1>Desenvolvimento Web Acessível</h1>
+                    <p class="meta-info">Última edição em 9 de novembro de 2026 • Revisitado pela comunidade W3C</p>
+                </header>
+
+                <section id="introducao">
+                    <h2>Introdução</h2>
+                    <p>O desenvolvimento web acessível garante que todas as pessoas, incluindo aquelas com deficiências visuais, motoras, auditivas ou cognitivas, possam navegar, compreender e interagir com a Web de maneira autônoma.</p>
+                    
+                    <blockquote cite="https://www.w3.org/WAI/">
+                        "A força da Web está na sua universalidade. O acesso por todas as pessoas, independentemente de deficiência, é um aspecto essencial."
+                        <br><small>— Tim Berners-Lee, criador da World Wide Web</small>
+                    </blockquote>
+                </section>
+
+                <section id="historia">
+                    <h2>História e Evolução</h2>
+                    <p>A estrutura semântica evoluiu substancialmente com a chegada do HTML5, introduzindo elementos específicos para delimitar regiõess-chave de uma página sem a necessidade excessiva de divisões genéricas.</p>
+
+                    <!-- Imagem Responsiva usando <picture> -->
+                    <figure>
+                        <picture>
+                            <source media="(min-width: 800px)" srcset="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=800&auto=format&fit=crop">
+                            <source media="(min-width: 450px)" srcset="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=450&auto=format&fit=crop">
+                            <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=300&auto=format&fit=crop" alt="Desenvolvedor trabalhando em um código HTML estruturado em tela escura">
+                        </picture>
+                        <figcaption>Figura 1: A estruturação adequada do código facilita a interpretação por navegadores e leitores de tela.</figcaption>
+                    </figure>
+                </section>
+
+                <section id="acessibilidade">
+                    <h2>Acessibilidade e Padrões WAI</h2>
+                    <p>A <strong>WAI</strong> (<em>Web Accessibility Initiative</em>) é uma iniciativa do <strong>W3C</strong> voltada para criar diretrizes globais (como a WCAG). O uso do texto alternativo via atributo <code>alt</code> em imagens é fundamental para que leitores de tela como o NVDA consigam descrever o conteúdo visual.</p>
+
+                    <p>Dica de atalho: Você pode utilizar a tecla <kbd>Tab</kbd> para navegar entre os links acessíveis e acionar botões usando a tecla <kbd>Enter</kbd>.</p>
+
+                    <!-- Conteúdo Retrátil com <details> e <summary> -->
+                    <details>
+                        <summary>Clique para ver diretrizes rápidas de acessibilidade</summary>
+                        <ul>
+                            <li>Use tags semânticas (como <code>&lt;main&gt;</code>, <code>&lt;header&gt;</code>, <code>&lt;footer&gt;</code>).</li>
+                            <li>Forneça contraste adequado entre texto e fundo.</li>
+                            <li>Garantir validação de formulários com rótulos claros (<code>&lt;label&gt;</code>).</li>
+                        </ul>
+                    </details>
+                </section>
+
+                <section id="recursos">
+                    <h2>Recursos Multimídia</h2>
+                    <p>O HTML5 introduziu suporte nativo a mídias sem a necessidade de plugins externos através de elementos dedicados como <code>&lt;video&gt;</code> e <code>&lt;audio&gt;</code>, além de legendas temporizadas via <code>&lt;track&gt;</code>.</p>
+                    
+                    <p>Métrica de Conformidade WAI-ARIA no projeto:</p>
+                    <meter value="0.9" min="0" max="1.0" low="0.3" high="0.8" optimum="1.0">90% de Conformidade</meter> (90% Conforme)
+                </section>
+
+                <section id="referencias">
+                    <h2>Referências</h2>
+                    <ol>
+                        <li>W3C — World Wide Web Consortium. <em>Web Content Accessibility Guidelines (WCAG)</em>.</li>
+                        <li>NV Access. <em>NVDA Screen Reader Documentation</em>.</li>
+                    </ol>
+                </section>
+            </article>
+        </main>
+
+        <!-- Cartão Lateral / Infobox de Metadados -->
+        <aside class="infobox" aria-label="Informações Rápidas">
+            <header>
+                <h3 style="margin:0; text-align:center;">Ficha Técnica</h3>
+            </header>
+            <table>
+                <tbody>
+                    <tr>
+                        <th>Tecnologia</th>
+                        <td>HTML5 / CSS3</td>
+                    </tr>
+                    <tr>
+                        <th>Regulamentação</th>
+                        <td>W3C</td>
+                    </tr>
+                    <tr>
+                        <th>Leitor Recomendado</th>
+                        <td>NVDA / JAWS</td>
+                    </tr>
+                    <tr>
+                        <th>Status</th>
+                        <td>Semântico e Acessível</td>
+                    </tr>
+                </tbody>
+            </table>
+        </aside>
+
+    </div>
+
+    <!-- Rodapé da Página -->
+    <footer role="contentinfo">
+        <p>&copy; 2026 WikiWeb — Projeto voltado ao treino de Semântica e Acessibilidade Web.</p>
+        <p><small>Desenvolvido de acordo com as especificações do W3C e recomendações da WAI.</small></p>
+    </footer>
+
+</body>
+</html>
